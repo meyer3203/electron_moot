@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+    <style>
+        body {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            text-align: center;
+            font-family: Poppins;
+        }
+
+        .mic {
+            display: flex;
+            padding: 1rem;
+        }
+
+        .off {
+            background-color: #FF5656;
+        }
+
+        .on {
+            background-color: #00D1FF;
+        }
+
+        .nodisplay {
+            display: none;
+        }
+
+        img {
+            flex: 1;
+            width: 10vw;
+        }
+
+        .text {
+            flex: 2;
+            font-size: 14vw;
+            margin: auto;
+        }
+    </style>
+    <script type="text/javascript">
+        let muteState = true;
+        const onClickMute = () => {
+            console.log('bt1')
+            muteState = !muteState;
+            window.api.send("muteState", muteState)
+
+            if (muteState) {
+                document.getElementsByClassName("on")[0].classList.add("nodisplay")
+                document.getElementsByClassName("off")[0].classList.remove("nodisplay")
+            } else {
+                document.getElementsByClassName("off")[0].classList.add("nodisplay")
+                document.getElementsByClassName("on")[0].classList.remove("nodisplay")
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            console.log(document.getElementsByClassName("root"))
+            document.getElementsByClassName("root")[0].onclick = onClickMute;
+        })
+    </script>
+</head>
+
+<body style="background-color: #FF5656;">
+    <div class="root">
+        <div class="mic off">
+            <img src="./src/MicOff.png" alt="mic on" />
+            <div class="text">Mic OFF</div>
+        </div>
+        <div class="mic on">
+            <img src="./src/MicOn.png" alt="mic on" />
+            <div class="text">Mic ON</div>
+        </div>
+    </div>
+</body>
+
+</html>
