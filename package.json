@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@abandonware/noble": "^1.9.2-14",
-    "menubar": "^9.0.4"
+    "menubar": "^9.0.4",
+    "node-osascript": "^2.1.0"
   }
 }

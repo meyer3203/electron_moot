@@ -41,9 +41,8 @@ const initBLE = async (setMuteState) => {
 	})
 
 	const onReceiveMuteStateUpdate = (muted) => {
-		// write to device
-		console.log('bt1', muted ? 0xAA : 0xAB)
-		mootCharacteristic?.write(muted ? new Uint8Array([0xAA]) : new Uint8Array([0xAB]));
+		// array values : muted (1, 0), brightness (0-60), r, g, b
+		mootCharacteristic?.write(muted ? new Uint8Array([1, 10, 255, 34, 0]) : new Uint8Array([0, 10, 21, 255, 0]));
 	}
 
 	return { onReceiveMuteStateUpdate }

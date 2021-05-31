@@ -1,20 +1,25 @@
 const { app } = require('electron');
-const { initMenubar } = require('./menubar')
-const { initBLE } = require('./ble')
-const { createWindow } = require('./window')
+
+const { muteMacOS } = require('./macos');
+const { initMenubar } = require('./menubar');
+const { initBLE } = require('./ble');
+const { createWindow } = require('./window');
 
 const receiveMuteStateUpdateCallbacks = [];
-// const setMuteStateCallbacks = [];
-
-const onReceiveMuteStateUpdate = (muted) => {
-  for (cb of receiveMuteStateUpdateCallbacks) {
-    cb.call(null, muted);
-  }
-}
 
 const setMuteState = (muted) => {
   for (cb of receiveMuteStateUpdateCallbacks) {
     cb.call(null, muted);
+  }
+
+  switch (process.platform) {
+    case 'darwin':
+      muteMacOS(muted);
+      break;
+    case 'win32':
+      break;
+    default:
+      console.log("Platform not supported: ", process.platform);
   }
 }
 
