@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
     "build": "rollup --config src/svelte/rollup.config.js",
-    "dev": "rollup -w --config src/svelte/rollup.config.js"
+    "dev": "rollup -w --config src/svelte/rollup.config.js",
+    "dist": "electron-packager . moot"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +18,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "electron": "^12.0.9",
+    "electron-packager": "^15.2.0",
     "rollup": "^2.50.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",

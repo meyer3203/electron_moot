@@ -5,6 +5,9 @@ const { initMenubar } = require('./menubar');
 const { initBLE } = require('./ble');
 const { createWindow } = require('./window');
 
+const osascript = require('node-osascript');
+
+
 const receiveMuteStateUpdateCallbacks = [];
 
 const setMuteState = (muted) => {
@@ -24,14 +27,18 @@ const setMuteState = (muted) => {
 }
 
 app.whenReady().then(async () => {
-  const window = createWindow(setMuteState);
-  receiveMuteStateUpdateCallbacks.push(window.onReceiveMuteStateUpdate);
+  try {
+    const window = createWindow(setMuteState);
+    receiveMuteStateUpdateCallbacks.push(window.onReceiveMuteStateUpdate);
 
-  const menubar = initMenubar(setMuteState);
-  receiveMuteStateUpdateCallbacks.push(menubar.onReceiveMuteStateUpdate);
+    const menubar = initMenubar(setMuteState);
+    receiveMuteStateUpdateCallbacks.push(menubar.onReceiveMuteStateUpdate);
 
-  const ble = await initBLE(setMuteState);
-  receiveMuteStateUpdateCallbacks.push(ble.onReceiveMuteStateUpdate);
+    const ble = await initBLE(setMuteState);
+    receiveMuteStateUpdateCallbacks.push(ble.onReceiveMuteStateUpdate);
+  } catch (e) {
+    osascript.execute('display dialog msg', { msg: e.toString() })
+  }
 
   app.on('activate', () => {
   });
