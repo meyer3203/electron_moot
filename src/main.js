@@ -37,6 +37,7 @@ app.whenReady().then(async () => {
     const ble = await initBLE(setMuteState);
     receiveMuteStateUpdateCallbacks.push(ble.onReceiveMuteStateUpdate);
   } catch (e) {
+    // todo remove
     osascript.execute('display dialog msg', { msg: e.toString() })
   }
 

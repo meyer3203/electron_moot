@@ -17,6 +17,7 @@
 </script>
 
 <main style={cssVars}>
+	<img class="drag" src="images/drag_indicator.svg" alt="drag" />
 	<button class="root" on:click={handleClickMain}>
 		<div class="mic {!muteState ? 'nodisplay' : null}">
 			<img src="images/MicOff.png" alt="mic on" />
@@ -38,10 +39,27 @@
 	:global(main) {
 		height: 100%;
 		width: 100%;
+		-webkit-user-select: none;
 	}
 
 	button:focus {
 		border: none;
+	}
+
+	.drag {
+		-webkit-app-region: drag;
+		cursor: -webkit-grab;
+		position: absolute;
+		right: 0;
+		width: 25px;
+	}
+
+	.resize {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		margin: 0.2rem;
+		width: 15px;
 	}
 
 	.root {

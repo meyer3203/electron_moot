@@ -5,7 +5,9 @@ function createWindow(setMuteState) {
 	const win = new BrowserWindow({
 		width: 240,
 		height: 130,
-		// frame: false,
+		frame: false,
+		alwaysOnTop: true,
+		titleBarStyle: "customButtonsOnHover",
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,

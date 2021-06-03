@@ -10,10 +10,19 @@ const initMenubar = (setMuteState) => {
 	tray.muted = false;
 	tray.setIgnoreDoubleClickEvents(true); // macos only? todo check windows
 
+	const contextMenu = Menu.buildFromTemplate([
+		{ label: 'Item2', type: 'radio' },
+		{ label: 'Quit', type: 'radio', role: "quit" },
+	])
+
 	const mb = menubar(
 		{
 			showOnRightClick: true,
 			tray,
+			browserWindow: {
+				width: 0,
+				height: 0,
+			}
 			// showDockIcon: true
 		}
 	);
@@ -23,6 +32,7 @@ const initMenubar = (setMuteState) => {
 	})
 
 	tray.on('right-click', () => {
+		tray.popUpContextMenu(contextMenu);
 		console.log('rclick')
 	})
 
