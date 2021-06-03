@@ -1,6 +1,6 @@
 const osascript = require('node-osascript');
 
-const muteMacOS = (muted) => {
+const mute = (muted) => {
 	if (muted) {
 		osascript.execute('set volume input volume 0');
 	} else {
@@ -8,4 +8,4 @@ const muteMacOS = (muted) => {
 	}
 }
 
-module.exports = { muteMacOS }
+module.exports = { mute }
