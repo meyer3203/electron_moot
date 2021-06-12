@@ -1,5 +1,6 @@
 const { Menu, Tray } = require('electron')
 const { menubar } = require('menubar');
+const { createWindow } = require('./settings');
 const path = require('path');
 
 const menubarUUID = "e1120524-f862-46d4-81a7-79ddb7c7a4ba";
@@ -11,8 +12,8 @@ const initMenubar = (setMuteState) => {
 	tray.setIgnoreDoubleClickEvents(true); // macos only? todo check windows
 
 	const contextMenu = Menu.buildFromTemplate([
-		{ label: 'Item2', type: 'radio' },
-		{ label: 'Quit', type: 'radio', role: "quit" },
+		{ label: 'Preferences', click: createWindow },
+		{ label: 'Quit Moot', role: "quit" },
 	])
 
 	const mb = menubar(

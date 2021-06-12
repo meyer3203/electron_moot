@@ -3,11 +3,8 @@ const path = require('path')
 
 function createWindow(setMuteState) {
 	const win = new BrowserWindow({
-		width: 240,
-		height: 130,
-		frame: false,
-		alwaysOnTop: true,
-		titleBarStyle: "customButtonsOnHover",
+		width: 600,
+		height: 800,
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
@@ -16,7 +13,7 @@ function createWindow(setMuteState) {
 		}
 	})
 
-	win.loadFile(path.join(__dirname, "svelte/public/index.html"))
+	win.loadFile(path.join(__dirname, "index.html"))
 	// win.webContents.openDevTools()
 	ipcMain.on('toMain', (sender, value) => {
 		setMuteState(value);
@@ -25,7 +22,6 @@ function createWindow(setMuteState) {
 	const onReceiveMuteStateUpdate = (muted) => {
 		!win.isDestroyed() && win.webContents.send("fromMain", muted);
 	}
-
 
 	return { onReceiveMuteStateUpdate }
 };

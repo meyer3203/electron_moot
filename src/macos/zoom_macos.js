@@ -8,10 +8,10 @@ const mute = (muteState) => {
 }
 
 const checkMutedState = () => {
-	const fileName = 'zoom-check-mute-state.scpt';
-	return new Promise((resolve) => {
+	return new Promise((resolve, reject) => {
+		const fileName = 'zoom-check-mute-state.scpt';
 		osascript.executeFile(__dirname + '/applescripts/' + fileName, null, (err, result, raw) => {
-			if (err) console.error(err)
+			if (err) reject(err)
 
 			if (result === "Muted") {
 				resolve(true);

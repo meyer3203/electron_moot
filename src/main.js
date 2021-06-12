@@ -2,6 +2,8 @@ const { app } = require('electron');
 
 const macOS = require('./macos/macos');
 const zoomMacOS = require('./macos/zoom_macos');
+const meetMacOS = require('./macos/meet_macos');
+const webexMacOS = require('./macos/webex_macos');
 
 const { initMenubar } = require('./menubar');
 const { initBLE } = require('./ble');
@@ -11,7 +13,7 @@ const osascript = require('node-osascript');
 
 const receiveMuteStateUpdateCallbacks = [];
 
-let globalMutedState; // init?
+let globalMutedState = false;
 
 const setMuteState = (muted) => {
   globalMutedState = muted;
@@ -24,7 +26,8 @@ const setMuteState = (muted) => {
     case 'darwin':
       macOS.mute(muted);
       zoomMacOS.mute(muted);
-      zoomMacOS.checkMutedState();
+      // meetMacOS.toggleMute();
+      webexMacOS.mute(muted);
       break;
     case 'win32':
       break;
@@ -39,9 +42,19 @@ const checkMutedStates = async () => {
       let zoomMuted = await zoomMacOS.checkMutedState();
       if (zoomMuted != null) {
         if (zoomMuted != globalMutedState) {
+          console.log("detected zoom change")
           setMuteState(zoomMuted)
         }
       }
+
+      let webexMuted = await webexMacOS.checkMutedState();
+      if (webexMuted != null) {
+        if (webexMuted != globalMutedState) {
+          console.log("detected webex change")
+          setMuteState(webexMuted)
+        }
+      }
+
     case 'win32':
       break;
     default:
