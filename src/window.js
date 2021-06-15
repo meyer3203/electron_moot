@@ -1,8 +1,10 @@
 const { BrowserWindow, ipcMain } = require('electron');
 const path = require('path')
 
+let win;
+
 function createWindow(setMuteState) {
-	const win = new BrowserWindow({
+	win = new BrowserWindow({
 		width: 240,
 		height: 130,
 		frame: false,
@@ -16,18 +18,23 @@ function createWindow(setMuteState) {
 		}
 	})
 
-	win.loadFile(path.join(__dirname, "svelte/public/index.html"))
+	win.loadURL(`file://${__dirname}/svelte/public/index.html#/toggle`)
 	// win.webContents.openDevTools()
-	ipcMain.on('toMain', (sender, value) => {
+	ipcMain.on('muteStateToMain', (sender, value) => {
 		setMuteState(value);
 	})
 
 	const onReceiveMuteStateUpdate = (muted) => {
-		!win.isDestroyed() && win.webContents.send("fromMain", muted);
+		!win.isDestroyed() && win.webContents.send("muteStateFromMain", muted);
 	}
-
 
 	return { onReceiveMuteStateUpdate }
 };
 
-module.exports = { createWindow };
+const onSetAlwaysOnTop = (alwaysOnTop) => {
+	console.log('bt1', alwaysOnTop)
+	win?.setAlwaysOnTop(alwaysOnTop);
+	win?.show();
+}
+
+module.exports = { createWindow, onSetAlwaysOnTop };

@@ -5,6 +5,7 @@ const zoomMacOS = require('./macos/zoom_macos');
 const meetMacOS = require('./macos/meet_macos');
 const webexMacOS = require('./macos/webex_macos');
 
+require('./store');
 const { initMenubar } = require('./menubar');
 const { initBLE } = require('./ble');
 const { createWindow } = require('./window');
