@@ -30,17 +30,25 @@ class Store {
 
 function parseDataFile(filePath, defaults) {
 	try {
-		return JSON.parse(fs.readFileSync(filePath));
+		const savedSettings = JSON.parse(fs.readFileSync(filePath));
+		return {
+			...defaults,
+			...savedSettings
+		}
 	} catch (error) {
 		return defaults;
 	}
 }
 
-console.log('bt1', onSetAlwaysOnTop)
 const store = new Store({
 	configName: 'moot-settings',
 	defaults: {
 		alwaysOnTop: true,
+		zoomSet: true,
+		zoomListen: true,
+		webexSet: true,
+		webexListen: true,
+		meetSet: false,
 	},
 	callbacks: {
 		alwaysOnTop: onSetAlwaysOnTop,

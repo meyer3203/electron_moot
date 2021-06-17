@@ -7,10 +7,10 @@
 		config = window.api.sendSync("getConfigState");
 	});
 
-	const onClickAlwaysOnTop = () => {
-		config.alwaysOnTop = !config.alwaysOnTop;
+	const onClickCheckbox = (key) => {
+		config[key] = !config[key];
 		window.api.sendSync("updateConfigState", {
-			alwaysOnTop: config.alwaysOnTop,
+			[key]: config[key],
 		});
 	};
 </script>
@@ -18,15 +18,17 @@
 {#if !config}
 	<div />
 {:else}
-	<div>
-		<input
-			id="alwaysOnTop"
-			type="checkbox"
-			checked={config?.alwaysOnTop}
-			on:click={onClickAlwaysOnTop}
-		/>
-		<label for="alwaysOnTop">Always on Top</label>
-	</div>
+	{#each Object.entries(config) as [key, value]}
+		<div>
+			<input
+				id={key}
+				type="checkbox"
+				checked={config?.[key]}
+				on:click={() => onClickCheckbox(key)}
+			/>
+			<label for={key}>{key}</label>
+		</div>
+	{/each}
 {/if}
 
 <style>

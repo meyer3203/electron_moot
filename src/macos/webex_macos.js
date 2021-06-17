@@ -3,6 +3,10 @@ const osascript = require('node-osascript');
 let delayTimeout = null;
 
 const mute = async (muteState) => {
+	if (!store.data.webexSet) {
+		return;
+	}
+
 	clearTimeout(delayTimeout);
 	delayTimeout = delay(2000, () => { delayTimeout = null });
 	await delay(100, () => { });
@@ -15,6 +19,10 @@ const mute = async (muteState) => {
 }
 
 const checkMutedState = async () => {
+	if (!store.data.webexListen) {
+		return null;
+	}
+
 	if (!(delayTimeout === null || delayTimeout === undefined)) {
 		console.log("Skipping check...")
 		return null;

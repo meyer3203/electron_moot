@@ -32,7 +32,6 @@ function createWindow(setMuteState) {
 };
 
 const onSetAlwaysOnTop = (alwaysOnTop) => {
-	console.log('bt1', alwaysOnTop)
 	win?.setAlwaysOnTop(alwaysOnTop);
 	win?.show();
 }
