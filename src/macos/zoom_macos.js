@@ -1,7 +1,7 @@
 const osascript = require('node-osascript');
 
 const mute = (muteState) => {
-	if (!store.data.zoomSet) {
+	if (!store.data.zoomSync) {
 		return;
 	}
 
@@ -12,7 +12,7 @@ const mute = (muteState) => {
 }
 
 const checkMutedState = () => {
-	if (!store.data.zoomListen) {
+	if (!store.data.zoomSync) {
 		return null;
 	}
 

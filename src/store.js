@@ -13,7 +13,7 @@ class Store {
 		this.data = parseDataFile(this.path, opts.defaults);
 		this.callbacks = opts.callbacks;
 		Object.keys(opts.callbacks).forEach((key) => {
-			opts.callbacks[key]?.();
+			opts.callbacks[key]?.(this.data[key]);
 		})
 	}
 

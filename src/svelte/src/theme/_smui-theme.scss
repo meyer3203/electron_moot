@@ -1,0 +1,27 @@
+@use '@material/theme/color-palette';
+
+$background: #4f4f4f;
+$prim: #00D1FF;
+
+@use '@material/theme/index' as theme with (
+  $primary: $prim,
+  $secondary: #969696,
+  $surface: #fff,
+  $background: #fff,
+  $error: color-palette.$red-900,
+);
+
+html,
+body {
+  color: if(theme.contrast-tone($background) == 'dark', #000, #fff);
+  --mdc-checkbox-unchecked-color: #00D1FF;
+  --mdc-checkbox-checked-color: #00D1FF;
+  padding: 0;
+}
+
+a {
+  color: color-palette.$blue-500;
+}
+a:visited {
+  color: color-palette.$blue-800;
+}

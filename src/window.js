@@ -8,7 +8,7 @@ function createWindow(setMuteState) {
 		width: 240,
 		height: 130,
 		frame: false,
-		alwaysOnTop: true,
+		alwaysOnTop: store.data.alwaysOnTop,
 		titleBarStyle: "customButtonsOnHover",
 		webPreferences: {
 			nodeIntegration: false,

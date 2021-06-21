@@ -3,18 +3,20 @@ const path = require('path');
 
 function createWindow(setMuteState) {
 	const win = new BrowserWindow({
-		width: 600,
-		height: 800,
+		width: 800,
+		height: 500,
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
 			enableRemoteModule: false,
 			preload: path.join(__dirname, "preload.js")
-		}
+		},
+		// titleBarStyle: "customButtonsOnHover",
+		frame: false,
 	})
 
 	win.loadURL(`file://${__dirname}/svelte/public/index.html#/settings`)
-	win.webContents.openDevTools()
+	// win.webContents.openDevTools()
 	ipcMain.on('getConfigState', (event, value) => {
 		event.returnValue = store.data;
 	})

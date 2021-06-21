@@ -3,7 +3,7 @@ const osascript = require('node-osascript');
 let delayTimeout = null;
 
 const mute = async (muteState) => {
-	if (!store.data.webexSet) {
+	if (!store.data.webexSync) {
 		return;
 	}
 
@@ -19,7 +19,7 @@ const mute = async (muteState) => {
 }
 
 const checkMutedState = async () => {
-	if (!store.data.webexListen) {
+	if (!store.data.webexSync) {
 		return null;
 	}
 
