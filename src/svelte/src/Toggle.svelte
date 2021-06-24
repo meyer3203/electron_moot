@@ -51,7 +51,7 @@
 		cursor: -webkit-grab;
 		position: absolute;
 		right: 0;
-		width: 25px;
+		width: 25px;	
 	}
 
 	.resize {

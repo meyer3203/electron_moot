@@ -35,8 +35,10 @@ const initBLE = async (setMuteState) => {
 			setMuteState(value === "mooted")
 		})
 
-		peripheral.on('disconnect', () => {
+		peripheral.once('disconnect', () => {
 			console.log('disconnected!')
+			init();
+			console.log('trying to reconnect...')
 		})
 	})
 

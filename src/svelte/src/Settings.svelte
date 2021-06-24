@@ -23,7 +23,7 @@
 		<img
 			src="images/MootLogo.svg"
 			alt="moot_logo"
-			style={"width: 50%; align-self:flex-end; margin-bottom: 50px;"}
+			style={"width: 50%; align-self:flex-end; margin-bottom: 50px; -webkit-app-region: drag; cursor: -webkit-grab;"}
 		/>
 		<FormField style={"margin-bottom: 20px;"}>
 			<Checkbox
@@ -70,7 +70,11 @@
 			#4f4f4f;
 		width: 100%;
 		height: 100%;
+
+		-webkit-app-region: drag;
+		cursor: -webkit-grab;
 	}
+
 	span {
 		color: #00d1ff;
 		font-size: 24px;

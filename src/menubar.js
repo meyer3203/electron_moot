@@ -34,7 +34,6 @@ const initMenubar = (setMuteState) => {
 
 	tray.on('right-click', () => {
 		tray.popUpContextMenu(contextMenu);
-		console.log('rclick')
 	})
 
 	const onReceiveMuteStateUpdate = (muted) => {

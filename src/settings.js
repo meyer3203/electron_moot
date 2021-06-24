@@ -11,7 +11,7 @@ function createWindow(setMuteState) {
 			enableRemoteModule: false,
 			preload: path.join(__dirname, "preload.js")
 		},
-		// titleBarStyle: "customButtonsOnHover",
+		titleBarStyle: "customButtonsOnHover",
 		frame: false,
 	})
 

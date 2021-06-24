@@ -24,7 +24,6 @@ const checkMutedState = async () => {
 	}
 
 	if (!(delayTimeout === null || delayTimeout === undefined)) {
-		console.log("Skipping check...")
 		return null;
 	}
 
