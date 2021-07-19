@@ -31,9 +31,13 @@ function createWindow(setMuteState) {
 	return { onReceiveMuteStateUpdate }
 };
 
+function closeWindow() {
+	win?.close();
+}
+
 const onSetAlwaysOnTop = (alwaysOnTop) => {
 	win?.setAlwaysOnTop(alwaysOnTop);
 	win?.show();
 }
 
-module.exports = { createWindow, onSetAlwaysOnTop };
+module.exports = { createWindow, closeWindow, onSetAlwaysOnTop };

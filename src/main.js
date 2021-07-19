@@ -7,8 +7,8 @@ const webexMacOS = require('./macos/webex_macos');
 
 require('./store');
 const { initMenubar } = require('./menubar');
-const { initBLE } = require('./ble');
-const { createWindow } = require('./window');
+const { initBLE, cleanup } = require('./ble');
+const { createWindow, closeWindow } = require('./window');
 
 const osascript = require('node-osascript');
 
@@ -77,12 +77,17 @@ app.whenReady().then(async () => {
     setInterval(checkMutedStates, 500);
   } catch (e) {
     // todo remove
+    console.log("ERROR: ", e)
     osascript.execute('display dialog msg', { msg: e.toString() })
   }
 
   app.on('activate', () => {
   });
 });
+
+app.on('before-quit', async () => {
+  await cleanup();
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
