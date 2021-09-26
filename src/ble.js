@@ -6,23 +6,49 @@ const characteristicUUID = "beb5483e-36e1-4688-b7f5-ea07361b26a8";
 let mootCharacteristic;
 let mootPeripheral;
 
-const initBLE = async (setMuteState) => {
-	const init = async () => {
-		await noble?.startScanningAsync([serviceUUID], false)
-		console.log("Scanning...")
-	}
+let connectedCallbacks = []
+let disconnectedCallbacks = []
 
-	noble.onStateChange = async (state) => {
-		if (state === 'poweredOn') {
-			await init()
-		}
-	}
+function registerConnectedCb(fn) {
+	connectedCallbacks.push(fn)
+}
+
+function registerDisconnectedCb(fn) {
+	disconnectedCallbacks.push(fn)
+}
+
+const scanBLE = async () => {
+	await noble?.startScanningAsync([serviceUUID], false)
+	console.log("Scanning...")
+}
+
+const initBLE = async (setMuteState) => {
+	// noble?.on('stateChange', async (state) => {
+	// 	if (state === 'poweredOn') {
+	// 		await scanBLE()
+	// 	}
+	// })
 
 	noble?.on('discover', async (peripheral) => {
 		console.log("Found peripheral", peripheral.address, peripheral.advertisement.localName)
 		mootPeripheral = peripheral;
 
+		mootPeripheral.once('connect', () => {
+			console.log('connected!')
+			connectedCallbacks.forEach(fn => fn())
+		})
+
+		mootPeripheral.once('disconnect', () => {
+			console.log('disconnected!')
+			// scanBLE();
+			// console.log('trying to reconnect...')
+		})
+
+		await setTimeout(() => { }, 300)
+
 		await noble.stopScanningAsync();
+		
+		// todo handle fail to connect (should time out) - maybe add loading state
 		await mootPeripheral.connectAsync();
 
 		const { characteristics } = await peripheral.discoverSomeServicesAndCharacteristicsAsync([serviceUUID], [characteristicUUID]);
@@ -32,12 +58,6 @@ const initBLE = async (setMuteState) => {
 		mootCharacteristic.on('data', (data) => {
 			const value = String.fromCharCode(...data);
 			setMuteState(value === "mooted")
-		})
-
-		mootPeripheral.once('disconnect', () => {
-			console.log('disconnected!')
-			init();
-			console.log('trying to reconnect...')
 		})
 	})
 
@@ -60,4 +80,8 @@ async function cleanup() {
 	await mootPeripheral?.disconnectAsync();
 }
 
-module.exports = { initBLE, cleanup }
+module.exports.initBLE = initBLE;
+module.exports.scanBLE = scanBLE;
+module.exports.cleanup = cleanup;
+module.exports.registerConnectedCb = registerConnectedCb;
+module.exports.registerDisconnectedCb = registerDisconnectedCb;

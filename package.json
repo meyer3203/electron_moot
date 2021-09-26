@@ -9,7 +9,8 @@
     "build": "rollup --config src/svelte/rollup.config.js",
     "dev": "rollup -w --config src/svelte/rollup.config.js",
     "dist": "electron-packager . moot",
-    "dist-win": "electron-packager . moot --platform=win32"
+    "dist-win": "electron-packager . moot --platform=win32",
+    "dist-sign": "electron-packager . moot --osx-sign"
   },
   "keywords": [],
   "author": "",

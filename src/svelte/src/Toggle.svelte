@@ -1,5 +1,11 @@
 <script>
+	const ConnectStates = {
+		NOT_CONNECTED: "NOT_CONNECTED",
+		CONNECTED: "CONNECTED",
+		SEARCHING: "SEARCHING",
+	};
 	export let muteState = false;
+	export let connectState = ConnectStates.NOT_CONNECTED;
 
 	let muteColor = "#ff5656";
 	let unmuteColor = "#00D1FF";
@@ -11,8 +17,26 @@
 		window.api.send("muteStateToMain", muteState);
 	}
 
+	function handleClickSearch() {
+		connectState = ConnectStates.SEARCHING;
+		window.api.send("searchForDevices");
+	}
+
+	function handleClickDisconnect() {
+		connectState = ConnectStates.NOT_CONNECTED;
+		window.api.send("disconnect");
+	}
+
 	window.api.receive("muteStateFromMain", (value) => {
 		muteState = value;
+	});
+
+	window.api.receive("connectedFromMain", (value) => {
+		connectState = ConnectStates.CONNECTED;
+	});
+
+	window.api.receive("disconnectedFromMain", (value) => {
+		connectState = ConnectStates.NOT_CONNECTED;
 	});
 </script>
 
@@ -28,6 +52,21 @@
 			<div class="text">Mic ON</div>
 		</div>
 	</button>
+	<div class={"connect_container"}>
+		{#if connectState === ConnectStates.NOT_CONNECTED}
+			<div on:click={handleClickSearch}>
+				<div class={"connect_inner search_for_devices"}>
+					Search for devices
+				</div>
+			</div>
+		{:else if connectState === ConnectStates.CONNECTED}
+			<div class={"connect_inner"} on:click={handleClickDisconnect}>
+				Disconnect
+			</div>
+		{:else if connectState === ConnectStates.SEARCHING}
+			<div class={"connect_inner"}>Searching..</div>
+		{/if}
+	</div>
 </main>
 
 <style>
@@ -51,7 +90,23 @@
 		cursor: -webkit-grab;
 		position: absolute;
 		right: 0;
-		width: 25px;	
+		width: 25px;
+	}
+
+	.connect_container {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		color: #4f4f4f;
+		font-size: 12px;
+	}
+
+	.connect_inner {
+		padding: 4px;
+		padding-right: 5px;
+	}
+	.search_for_devices {
+		border: 1px dashed rgba(0, 0, 0, 0.1);
 	}
 
 	.resize {

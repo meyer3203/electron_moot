@@ -1,9 +1,13 @@
 const { Menu, Tray } = require('electron')
 const { menubar } = require('menubar');
-const { createWindow } = require('./settings');
+const { createWindow: createSettingsWindow } = require('./settings');
+const { createWindow: createToggleWindow } = require('./window')
 const path = require('path');
 
 const menubarUUID = "e1120524-f862-46d4-81a7-79ddb7c7a4ba";
+
+let contextMenu;
+let menubarRef;
 
 const initMenubar = (setMuteState) => {
 	// todo add ICO for Windows
@@ -11,19 +15,25 @@ const initMenubar = (setMuteState) => {
 	tray.muted = false;
 	tray.setIgnoreDoubleClickEvents(true); // macos only? todo check windows
 
-	const contextMenu = Menu.buildFromTemplate([
-		{ label: 'Preferences', click: createWindow },
-		{ label: 'Quit Moot', role: "quit" },
+	const preferencesItem = { label: 'Preferences', click: createSettingsWindow };
+	const reopenItem = { id: 'reopen', label: 'Re-open toggle window', click: createToggleWindow };
+	const quitItem = { label: 'Quit Moot', role: "quit" };
+
+	contextMenu = Menu.buildFromTemplate([
+		preferencesItem,
+		reopenItem,
+		quitItem,
 	])
 
-	const mb = menubar(
+	menubarRef = menubar(
 		{
 			showOnRightClick: true,
 			tray,
-			browserWindow: {
-				width: 0,
-				height: 0,
-			}
+			browserWindow: { // no window causes loading spinner
+				width: 1,
+				height: 1,
+			},
+			preloadWindow: true,
 			// showDockIcon: true
 		}
 	);
@@ -49,4 +59,10 @@ const initMenubar = (setMuteState) => {
 	return { onReceiveMuteStateUpdate };
 }
 
-module.exports = { initMenubar };
+const toggleReopenState = (open) => {
+	// console.log(contextMenu?.getApplicationMenu)
+	// console.log(contextMenu?.getApplicationMenu?.items)
+	// contextMenu?.getApplicationMenu()?.getMenuItemById('reopen')?.setEnabled(!open)
+}
+
+module.exports = { initMenubar, toggleReopenState };

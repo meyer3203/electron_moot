@@ -8,7 +8,7 @@ const webexMacOS = require('./macos/webex_macos');
 require('./store');
 const { initMenubar } = require('./menubar');
 const { initBLE, cleanup } = require('./ble');
-const { createWindow, closeWindow } = require('./window');
+const { createWindow, closeWindow, initWindow } = require('./window');
 
 const osascript = require('node-osascript');
 
@@ -65,7 +65,7 @@ const checkMutedStates = async () => {
 
 app.whenReady().then(async () => {
   try {
-    const window = createWindow(setMuteState);
+    const window = initWindow(setMuteState);
     receiveMuteStateUpdateCallbacks.push(window.onReceiveMuteStateUpdate);
 
     const menubar = initMenubar(setMuteState);
