@@ -1,3 +1,4 @@
 **/node_modules/
 node_modules/
 moot-darwin-x64/
+**/*.dmg

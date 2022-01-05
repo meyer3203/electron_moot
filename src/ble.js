@@ -40,6 +40,7 @@ const initBLE = async (setMuteState) => {
 
 		mootPeripheral.once('disconnect', () => {
 			console.log('disconnected!')
+			disconnectedCallbacks.forEach(fn => fn())
 			// scanBLE();
 			// console.log('trying to reconnect...')
 		})
@@ -47,7 +48,7 @@ const initBLE = async (setMuteState) => {
 		await setTimeout(() => { }, 300)
 
 		await noble.stopScanningAsync();
-		
+
 		// todo handle fail to connect (should time out) - maybe add loading state
 		await mootPeripheral.connectAsync();
 
@@ -80,8 +81,12 @@ async function cleanup() {
 	await mootPeripheral?.disconnectAsync();
 }
 
+async function stopScanning() {
+	await noble?.stopScanningAsync();
+}
 module.exports.initBLE = initBLE;
 module.exports.scanBLE = scanBLE;
 module.exports.cleanup = cleanup;
+module.exports.stopScanning = stopScanning;
 module.exports.registerConnectedCb = registerConnectedCb;
 module.exports.registerDisconnectedCb = registerDisconnectedCb;

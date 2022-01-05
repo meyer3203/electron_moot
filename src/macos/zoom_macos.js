@@ -1,4 +1,5 @@
 const osascript = require('node-osascript');
+const log = require('electron-log');
 
 let delayTimeout = null;
 
@@ -13,7 +14,10 @@ const mute = async (muteState) => {
 
 	const fileName = muteState ? 'zoom-set-muted.scpt' : 'zoom-set-unmuted.scpt';
 	osascript.executeFile(__dirname + '/applescripts/' + fileName, null, (err, result, raw) => {
-		if (err) console.error(err)
+		if (err) {
+			log.error(err)
+			console.error(err)
+		}
 	})
 }
 
@@ -29,7 +33,11 @@ const checkMutedState = () => {
 	return new Promise((resolve, reject) => {
 		const fileName = 'zoom-check-mute-state.scpt';
 		osascript.executeFile(__dirname + '/applescripts/' + fileName, null, (err, result, raw) => {
-			if (err) reject(err)
+			console.log('bt1', result)
+			if (err) {
+				log.info(err)
+				reject(err)
+			}
 
 			if (result === "Muted") {
 				resolve(true);

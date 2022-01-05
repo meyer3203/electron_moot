@@ -1,3 +1,4 @@
+const { stopScanning } = require('@abandonware/noble');
 const { BrowserWindow, ipcMain } = require('electron');
 const path = require('path')
 const { scanBLE, registerConnectedCb, registerDisconnectedCb, cleanup } = require('./ble')
@@ -18,6 +19,10 @@ function initWindow(setMuteState) {
 
 	ipcMain.on('disconnect', (sender, value) => {
 		cleanup()
+	})
+
+	ipcMain.on('stopScanning', (sender, value) => {
+		stopScanning();
 	})
 
 	const onReceiveMuteStateUpdate = (muted) => {

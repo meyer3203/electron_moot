@@ -9,6 +9,7 @@ require('./store');
 const { initMenubar } = require('./menubar');
 const { initBLE, cleanup } = require('./ble');
 const { createWindow, closeWindow, initWindow } = require('./window');
+const log = require('electron-log');
 
 const osascript = require('node-osascript');
 
@@ -27,8 +28,8 @@ const setMuteState = (muted) => {
     case 'darwin':
       macOS.mute(muted);
       zoomMacOS.mute(muted);
-      // meetMacOS.toggleMute();
-      webexMacOS.mute(muted);
+      // meetMacOS.toggleMute(); // requires too many accessibility permissions; also not needed because meet recognizes system state
+      // webexMacOS.mute(muted); // webex error causes something to crash, osascripts stop running
       break;
     case 'win32':
       break;
@@ -77,8 +78,9 @@ app.whenReady().then(async () => {
     setInterval(checkMutedStates, 500);
   } catch (e) {
     // todo remove
+    log.error(e)
     console.log("ERROR: ", e)
-    osascript.execute('display dialog msg', { msg: e.toString() })
+    // osascript.execute('display dialog msg', { msg: e.toString() })
   }
 
   app.on('activate', () => {

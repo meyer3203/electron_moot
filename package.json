@@ -8,9 +8,10 @@
     "start": "electron .",
     "build": "rollup --config src/svelte/rollup.config.js",
     "dev": "rollup -w --config src/svelte/rollup.config.js",
-    "dist": "electron-packager . moot",
-    "dist-win": "electron-packager . moot --platform=win32",
-    "dist-sign": "electron-packager . moot --osx-sign"
+    "dist": "electron-packager . moot --overwrite",
+    "dist-win": "electron-packager . moot --platform=win32 --overwrite",
+    "dist-sign": "electron-packager . moot --osx-sign --overwrite",
+    "notarize": "node ./src/notarize.js"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +21,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "electron": "^12.0.14",
+    "electron-notarize": "^1.1.1",
     "electron-packager": "^15.2.0",
     "rollup": "^2.50.4",
     "rollup-plugin-css-only": "^3.1.0",
@@ -30,6 +32,8 @@
   },
   "dependencies": {
     "@abandonware/noble": "^1.9.2-14",
+    "electron-log": "^4.4.1",
+    "electron-osx-sign": "^0.6.0",
     "menubar": "^9.0.4",
     "node-osascript": "^2.1.0"
   }

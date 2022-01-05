@@ -27,6 +27,11 @@
 		window.api.send("disconnect");
 	}
 
+	function handleCancelScan() {
+		connectState = ConnectStates.NOT_CONNECTED;
+		window.api.send("stopScanning");
+	}
+
 	window.api.receive("muteStateFromMain", (value) => {
 		muteState = value;
 	});
@@ -56,15 +61,32 @@
 		{#if connectState === ConnectStates.NOT_CONNECTED}
 			<div on:click={handleClickSearch}>
 				<div class={"connect_inner search_for_devices"}>
+					<img
+						class={"state_icon"}
+						src="images/SearchIcon.svg"
+						alt="search"
+					/>
 					Search for devices
 				</div>
 			</div>
 		{:else if connectState === ConnectStates.CONNECTED}
 			<div class={"connect_inner"} on:click={handleClickDisconnect}>
+				<img
+					class={"state_icon"}
+					src="images/CancelIcon.svg"
+					alt="disconnect"
+				/>
 				Disconnect
 			</div>
 		{:else if connectState === ConnectStates.SEARCHING}
-			<div class={"connect_inner"}>Searching..</div>
+			<div on:click={handleCancelScan} class={"connect_inner"}>
+				<img
+					class={"state_icon"}
+					src="images/CancelIcon.svg"
+					alt="disconnect"
+				/>
+				Searching..
+			</div>
 		{/if}
 	</div>
 </main>
@@ -95,18 +117,31 @@
 
 	.connect_container {
 		position: absolute;
+		width: 100%;
 		bottom: 0;
 		right: 0;
-		color: #4f4f4f;
+		color: #00d1ff;
+		background-color: #4f4f4f;
 		font-size: 12px;
 	}
 
 	.connect_inner {
+		display: flex;
 		padding: 4px;
 		padding-right: 5px;
+		align-items: center;
+		justify-content: flex-end;
 	}
+
 	.search_for_devices {
-		border: 1px dashed rgba(0, 0, 0, 0.1);
+		/* border: 1px dashed rgba(0, 0, 0, 0.1); */
+	}
+
+	.state_icon {
+		flex: none;
+		height: 1.3em;
+		width: 1.3em;
+		margin-right: 3px;
 	}
 
 	.resize {
