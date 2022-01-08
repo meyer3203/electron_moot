@@ -8,10 +8,8 @@ const webexMacOS = require('./macos/webex_macos');
 require('./store');
 const { initMenubar } = require('./menubar');
 const { initBLE, cleanup } = require('./ble');
-const { createWindow, closeWindow, initWindow } = require('./window');
+const { initWindow } = require('./window');
 const log = require('electron-log');
-
-const osascript = require('node-osascript');
 
 const receiveMuteStateUpdateCallbacks = [];
 
@@ -49,13 +47,13 @@ const checkMutedStates = async () => {
         }
       }
 
-      let webexMuted = await webexMacOS.checkMutedState();
-      if (webexMuted != null) {
-        if (webexMuted != globalMutedState) {
-          console.log("detected webex change")
-          setMuteState(webexMuted)
-        }
-      }
+    // let webexMuted = await webexMacOS.checkMutedState();
+    // if (webexMuted != null) {
+    //   if (webexMuted != globalMutedState) {
+    //     console.log("detected webex change")
+    //     setMuteState(webexMuted)
+    //   }
+    // }
 
     case 'win32':
       break;
