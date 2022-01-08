@@ -1,6 +1,7 @@
 const osascript = require('node-osascript');
 const log = require('electron-log');
 
+// timeout to pause mute polling to prevent bad loops
 let delayTimeout = null;
 
 const mute = async (muteState) => {
@@ -26,7 +27,7 @@ const checkMutedState = () => {
 		return null;
 	}
 
-	if (!(delayTimeout === null || delayTimeout === undefined)) {
+	if (!!delayTimeout) {
 		return null;
 	}
 
@@ -37,6 +38,11 @@ const checkMutedState = () => {
 			if (err) {
 				log.info(err)
 				reject(err)
+			}
+
+			// there may have been a timeout added between the calling of this function and finishing of the osascript
+			if (!!delayTimeout) {
+				resolve(null);
 			}
 
 			if (result === "Muted") {
