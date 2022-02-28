@@ -1,4 +1,4 @@
-const { app } = require('electron');
+const { app, systemPreferences } = require('electron');
 
 const macOS = require('./macos/macos');
 const zoomMacOS = require('./macos/zoom_macos');
@@ -10,8 +10,6 @@ const { initMenubar } = require('./menubar');
 const { initBLE, cleanup } = require('./ble');
 const { createWindow, closeWindow, initWindow } = require('./window');
 const log = require('electron-log');
-
-const osascript = require('node-osascript');
 
 const receiveMuteStateUpdateCallbacks = [];
 
@@ -40,7 +38,7 @@ const setMuteState = (muted) => {
 
 const checkMutedStates = async () => {
   switch (process.platform) {
-    case 'darwin':
+    case 'darwin': {
       let zoomMuted = await zoomMacOS.checkMutedState();
       if (zoomMuted != null) {
         if (zoomMuted != globalMutedState) {
@@ -57,14 +55,47 @@ const checkMutedStates = async () => {
         }
       }
 
-    case 'win32':
       break;
-    default:
+    }
+    case 'win32': {
       break;
+    }
+    default: {
+      break;
+    }
   }
 }
 
+const debounce = (fn) => {
+  return setTimeout(() => {
+    const res = fn()
+    if (res) return null
+    return debounce(fn)
+  }, 1000)
+}
+
 app.whenReady().then(async () => {
+  switch (process.platform) {
+    case 'darwin': {
+      let isAccessibilityEnabled = systemPreferences.isTrustedAccessibilityClient(true)
+      if (!isAccessibilityEnabled) {
+        debounce(() => {
+          isAccessibilityEnabled = systemPreferences.isTrustedAccessibilityClient(false)
+          return isAccessibilityEnabled
+        })
+      }
+
+      break;
+    }
+    case 'win32': {
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
+
   try {
     const window = initWindow(setMuteState);
     receiveMuteStateUpdateCallbacks.push(window.onReceiveMuteStateUpdate);
@@ -77,10 +108,8 @@ app.whenReady().then(async () => {
 
     setInterval(checkMutedStates, 500);
   } catch (e) {
-    // todo remove
     log.error(e)
     console.log("ERROR: ", e)
-    // osascript.execute('display dialog msg', { msg: e.toString() })
   }
 
   app.on('activate', () => {
