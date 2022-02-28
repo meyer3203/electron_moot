@@ -20,7 +20,7 @@
     "@rollup/plugin-commonjs": "^19.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
-    "electron": "^12.0.14",
+    "electron": "^17.1.0",
     "electron-notarize": "^1.1.1",
     "electron-packager": "^15.2.0",
     "rollup": "^2.50.4",
@@ -35,6 +35,8 @@
     "electron-log": "^4.4.1",
     "electron-osx-sign": "^0.6.0",
     "menubar": "^9.0.4",
-    "node-osascript": "^2.1.0"
+    "node-osascript": "^2.1.0",
+    "postcss": "^8.4.7",
+    "rollup-plugin-postcss": "^4.0.2"
   }
 }
