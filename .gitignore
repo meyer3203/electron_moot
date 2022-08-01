@@ -2,3 +2,5 @@
 node_modules/
 moot-darwin-x64/
 **/*.dmg
+.DS_store
+**/.DS_Store
